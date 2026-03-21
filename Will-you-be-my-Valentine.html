@@ -1,8 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Great+Vibes&display=swap" rel="stylesheet">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Valentine 💘</title>
@@ -23,6 +23,8 @@
         }
 
         body {
+          <div class="blur-circle blur1"></div>
+<div class="blur-circle blur2"></div>
             margin: 0;
             font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
             color: var(--ink);
@@ -66,6 +68,7 @@
                 opacity: 0;
             }
         }
+      
 
         .wrap {
             width: min(980px, 92vw);
@@ -205,6 +208,7 @@
             font-size: clamp(44px, 6vw, 76px);
             margin: 8px 0 10px;
             letter-spacing: 1px;
+          
         }
 
         .yayline {
@@ -272,6 +276,157 @@
             font-size: 13px;
             color: rgba(0, 0, 0, 0.45);
         }
+        :root {
+    --pink1: #ff9ecb;
+    --pink2: #ffd6ec;
+    --glow: #ff4d79;
+    --ink: #1a1a1a;
+    --card: rgba(255, 255, 255, 0.15);
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    color: var(--ink);
+    background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* ✨ Animated gradient glow */
+body::before {
+    content: "";
+    position: fixed;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 105, 180, 0.3), transparent),
+                radial-gradient(circle at 70% 70%, rgba(255, 182, 193, 0.3), transparent);
+    animation: bgMove 10s linear infinite alternate;
+}
+
+@keyframes bgMove {
+    from { transform: translate(0,0); }
+    to { transform: translate(-10%, -10%); }
+}
+
+/* 💎 Glass card */
+.card {
+    background: var(--card);
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 💖 Romantic title */
+h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: clamp(40px, 6vw, 70px);
+    color: #ff2e63;
+    text-shadow: 0 0 10px rgba(255, 46, 99, 0.4);
+}
+
+/* ✨ Subtitle */
+.sub {
+    font-size: 18px;
+    color: #333;
+    opacity: 0.8;
+}
+
+/* 🔥 YES button premium */
+.yes {
+    background: linear-gradient(45deg, #ff416c, #ff4b2b);
+    color: white;
+    font-weight: 700;
+    border-radius: 30px;
+    padding: 14px 30px;
+    box-shadow: 0 10px 30px rgba(255, 65, 108, 0.5);
+    animation: pulse 1.5s infinite;
+}
+
+.yes:hover {
+    transform: scale(1.1);
+    box-shadow: 0 15px 40px rgba(255, 65, 108, 0.7);
+}
+
+/* 💓 Pulse animation */
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255, 65, 108, 0.6); }
+    70% { box-shadow: 0 0 0 20px rgba(255, 65, 108, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 65, 108, 0); }
+}
+
+/* 😈 NO button */
+.no {
+    background: rgba(255,255,255,0.8);
+    border-radius: 20px;
+    padding: 12px 20px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.no:hover {
+    background: #ffe6eb;
+}
+
+/* 💫 Floating blur circles (premium look) */
+.blur-circle {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+    z-index: -1;
+}
+
+.blur1 {
+    width: 200px;
+    height: 200px;
+    background: #ff4d79;
+    top: 10%;
+    left: 10%;
+}
+
+.blur2 {
+    width: 250px;
+    height: 250px;
+    background: #ff9ecb;
+    bottom: 10%;
+    right: 10%;
+}
+.ring-box {
+    margin-top: 20px;
+    perspective: 1000px;
+}
+
+.ring {
+    font-size: 80px;
+    animation: ringPop 1.2s ease forwards;
+    transform: scale(0) rotateY(0deg);
+}
+
+@keyframes ringPop {
+    0% {
+        transform: scale(0) rotateY(0deg);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.4) rotateY(180deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1) rotateY(360deg);
+    }
+}
     </style>
 </head>
 
@@ -282,9 +437,9 @@
         <div class="card" id="askCard">
             <div class="banner"></div>
             <h1><span class="name" id="who"></span>Charu<br />will you be my Valentine?
-                <span class="tiny-hearts" aria-hidden="true"><span>💗</span><span>💞</span></span>
-            </h1>
-            <p class="sub">Choose wisely. (The “No” button is… shy.)</p>
+                <span class="tiny-hearts" aria-hidden="true"><span>💞</span></span>
+            </h1> 
+          <p class="sub">Choose wisely. (The “No” button is… shy.)</p>
 
             <div class="row" id="playground">
                 <div class="yes-slot" id="noSlot">
@@ -299,12 +454,18 @@
         </div>
 
         <div class="card hidden" id="yayCard">
-            <h2 class="yay">💖 YAY!!! 💖</h2>
-            <p class="yayline">Best decision ever 😘</p>
+            <h3 class="yay"> YAY!!!</h3>
+           <h3 class="yay">💖 Charu 💖</h3>
+          <div class="ring-box">
+  <div class="ring">
+    💍
+  </div>
+</div>
+<p class="yayline">Best decision ever 😘</p>
 
-            <div class="gifbox">
+<div class="gifbox">
                 <img alt="Celebration" src="https://akhilr08.github.io/Will-you-be-my-Valentine/Rishi.jpg" />
-            </div>
+           </div>
 
             <div class="love">I love you ❤️</div>
         </div>
@@ -476,6 +637,9 @@
             setTimeout(() => confetti.classList.add("hidden"), 7000);
         }
     </script>
+<audio id="bgMusic" loop preload="auto">
+    <source src="https://download.downringtone.com//audio//1e6032a8e2b697239dea046d4bd51279//L3TkhLK5TBF2bJp0R7toMkC1RHE3VL8zQVC6Tqo9L0OufbF9ifUsNVxHX783bYC2.mp3" type="audio/mp3">
+    Your browser does not support the audio element.
+</audio>
 </body>
-
 </html>
