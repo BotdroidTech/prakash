@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>A Little Question For You 💌</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#D6336C">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="For Vithya">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFF7F1;
+    --blush:#FFC1D3;
+    --blush-deep:#FF8FAB;
+    --rose:#D6336C;
+    --plum:#5A1E3A;
+    --lavender:#C9BBFF;
+    --gold:#FFD166;
+    --shadow: rgba(90,30,58,0.15);
+    --radius: 28px;
+  }
+
+  *{ box-sizing:border-box; }
+  html,body{ height:100%; margin:0; }
+
+  body{
+    font-family:'Fredoka', sans-serif;
+    background: radial-gradient(circle at 20% 20%, #FFEFE2 0%, var(--cream) 45%, #FFE3EC 100%);
+    color:var(--plum);
+    min-height:100vh;
+    overflow-x:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
+    padding:24px;
+  }
+
+  /* ---------- Ambient floating hearts ---------- */
+  .hearts-bg{
+    position:fixed; inset:0; overflow:hidden; pointer-events:none; z-index:0;
+  }
+  .heart-drift{
+    position:absolute;
+    bottom:-10%;
+    font-size: 22px;
+    opacity:0.55;
+    color:var(--blush-deep);
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp{
+    0%{ transform: translateY(0) translateX(0) rotate(0deg); opacity:0; }
+    10%{ opacity:0.6; }
+    90%{ opacity:0.5; }
+    100%{ transform: translateY(-115vh) translateX(var(--drift,20px)) rotate(360deg); opacity:0; }
+  }
+
+  /* ---------- Card shell ---------- */
+  .stage{
+    position:relative;
+    z-index:2;
+    width:100%;
+    max-width:560px;
+  }
+
+  /* ---------- Persistent corner decorations ---------- */
+  .corner-decor{
+    position:fixed;
+    width:120px;
+    height:120px;
+    z-index:1;
+    pointer-events:none;
+    filter: drop-shadow(0 12px 22px rgba(90,30,58,0.28));
+  }
+  .corner-decor img,
+  .corner-decor .corner-fallback{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:4.2rem;
+  }
+  .corner-bl{
+    left:-12px;
+    bottom:-14px;
+    animation: floatCornerBL 4.5s ease-in-out infinite;
+  }
+  .corner-tr{
+    right:-12px;
+    top:-14px;
+    animation: floatCornerTR 4.5s ease-in-out infinite;
+  }
+  @keyframes floatCornerBL{
+    0%,100%{ transform: translateY(0) rotate(-6deg); }
+    50%{ transform: translateY(-18px) rotate(5deg); }
+  }
+  @keyframes floatCornerTR{
+    0%,100%{ transform: translateY(0) rotate(6deg); }
+    50%{ transform: translateY(18px) rotate(-5deg); }
+  }
+
+  @media (max-width:600px){
+    .corner-decor{ width:76px; height:76px; }
+    .corner-decor .corner-fallback{ font-size:2.6rem; }
+    .corner-bl{ left:-8px; bottom:-10px; }
+    .corner-tr{ right:-8px; top:-10px; }
+  }
+
+  .card{
+    background: rgba(255,255,255,0.72);
+    backdrop-filter: blur(14px);
+    border: 1.5px solid rgba(255,255,255,0.9);
+    border-radius: var(--radius);
+    box-shadow: 0 20px 60px var(--shadow), 0 2px 10px rgba(90,30,58,0.08);
+    padding: 44px 36px 38px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+    animation: cardIn 0.7s cubic-bezier(.22,1,.36,1);
+    transition: background 0.7s ease;
+  }
+
+  /* Colorful theme per question/card */
+  .theme-0{ background: linear-gradient(135deg, rgba(255,243,224,0.85), rgba(255,224,236,0.85)); }
+  .theme-1{ background: linear-gradient(135deg, rgba(212,255,236,0.85), rgba(197,241,255,0.85)); }
+  .theme-2{ background: linear-gradient(135deg, rgba(255,246,209,0.85), rgba(255,214,163,0.85)); }
+  .theme-3{ background: linear-gradient(135deg, rgba(233,224,255,0.85), rgba(214,196,255,0.85)); }
+  .theme-4{ background: linear-gradient(135deg, rgba(255,221,199,0.85), rgba(255,190,163,0.85)); }
+  .theme-5{ background: linear-gradient(135deg, rgba(199,255,241,0.85), rgba(163,230,255,0.85)); }
+  .theme-6{ background: linear-gradient(135deg, rgba(255,215,233,0.85), rgba(255,177,204,0.85)); }
+  .theme-final{ background: linear-gradient(135deg, rgba(255,241,199,0.88), rgba(255,205,229,0.88)); }
+  .theme-splash{ background: linear-gradient(135deg, rgba(255,224,242,0.88), rgba(224,231,255,0.88)); }
+  .theme-gate{ background: linear-gradient(135deg, rgba(255,236,224,0.88), rgba(232,224,255,0.88)); }
+
+  /* ---------- Splash screen ---------- */
+  #progress.hide-progress{ display:none; }
+
+  .splash-image-wrap{
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 18px;
+    position:relative;
+  }
+  .splash-img, .splash-emoji{
+    width:100%; height:100%;
+    border-radius:50%;
+    object-fit:cover;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:4rem;
+    background: linear-gradient(135deg, var(--blush), var(--lavender));
+    box-shadow: 0 16px 34px rgba(90,30,58,0.3);
+    border: 4px solid #fff;
+    animation: splashFloat 3s ease-in-out infinite;
+  }
+  @keyframes splashFloat{
+    0%,100%{ transform: translateY(0) rotate(-3deg); }
+    50%{ transform: translateY(-14px) rotate(3deg); }
+  }
+
+  .splash-name{
+    font-family:'Caveat', cursive;
+    font-size: 3.2rem;
+    font-weight:700;
+    margin: 4px 0 10px;
+    color: var(--rose);
+    min-height: 3.6rem;
+  }
+  .splash-name .letter{
+    display:inline-block;
+    opacity:0;
+    transform: translateY(18px) scale(0.6) rotate(-8deg);
+    animation: letterPop 0.55s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  .splash-name .letter.space{ width:0.4em; }
+  @keyframes letterPop{
+    0%{ opacity:0; transform: translateY(18px) scale(0.6) rotate(-8deg); }
+    60%{ opacity:1; transform: translateY(-6px) scale(1.15) rotate(4deg); }
+    100%{ opacity:1; transform: translateY(0) scale(1) rotate(0deg); }
+  }
+
+  /* ---------- Password gate ---------- */
+  .gate-lock{
+    font-size: 3rem;
+    margin-bottom: 8px;
+    animation: lockPulse 2.2s ease-in-out infinite;
+  }
+  @keyframes lockPulse{
+    0%,100%{ transform: scale(1) rotate(0deg); }
+    50%{ transform: scale(1.1) rotate(-4deg); }
+  }
+  .password-field{
+    margin: 6px 0 20px;
+  }
+  #passwordInput{
+    width:100%;
+    max-width: 220px;
+    display:block;
+    margin: 0 auto;
+    text-align:center;
+    font-family:'Fredoka', sans-serif;
+    font-size: 1.4rem;
+    font-weight:600;
+    letter-spacing: 5px;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 2px solid var(--blush);
+    outline: none;
+    background: #fff;
+    color: var(--plum);
+    transition: border-color 0.2s ease;
+  }
+  #passwordInput:focus{ border-color: var(--rose); }
+  .password-hint{
+    font-size: 0.85rem;
+    color: #8a4a63;
+    margin: 10px 0 0;
+  }
+  .password-error{
+    font-size: 0.85rem;
+    color: #D6336C;
+    font-weight:600;
+    margin: 8px 0 0;
+    opacity:0;
+    height:0;
+    overflow:hidden;
+  }
+  .password-error.show{
+    opacity:1;
+    height:auto;
+  }
+  .input-shake{
+    animation: shakeError 0.4s ease;
+  }
+  @keyframes shakeError{
+    0%,100%{ transform: translateX(0); }
+    25%{ transform: translateX(-8px); }
+    50%{ transform: translateX(8px); }
+    75%{ transform: translateX(-6px); }
+  }
+
+  @keyframes cardIn{
+    from{ opacity:0; transform: translateY(30px) scale(0.96); }
+    to{ opacity:1; transform: translateY(0) scale(1); }
+  }
+
+  .card::before{
+    content:"";
+    position:absolute; top:-60px; right:-60px;
+    width:160px; height:160px; border-radius:50%;
+    background: radial-gradient(circle, var(--gold) 0%, transparent 70%);
+    opacity:0.5;
+  }
+
+  /* progress dots */
+  .progress{
+    display:flex; gap:8px; justify-content:center; margin-bottom:26px;
+  }
+  .dot{
+    width:9px; height:9px; border-radius:50%;
+    background: rgba(214,51,108,0.2);
+    transition: all 0.4s ease;
+  }
+  .dot.active{ background:var(--rose); width:26px; border-radius:6px; }
+  .dot.done{ background: var(--gold); }
+
+  .eyebrow{
+    font-family:'Caveat', cursive;
+    font-size:1.4rem;
+    color:var(--rose);
+    margin:0 0 4px;
+    font-weight:700;
+  }
+
+  h1{
+    font-family:'Caveat', cursive;
+    font-size: 2.6rem;
+    line-height:1.15;
+    margin: 0 0 26px;
+    color:var(--plum);
+    font-weight:700;
+  }
+
+  .subtext{
+    font-size:0.95rem;
+    color:#8a4a63;
+    margin: -14px 0 24px;
+  }
+
+  /* buttons */
+  .choices{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    margin-top:6px;
+  }
+  .choice-row{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+
+  button{
+    font-family:'Fredoka', sans-serif;
+    font-weight:600;
+    font-size:1rem;
+    border:none;
+    cursor:pointer;
+    border-radius: 999px;
+    padding: 14px 26px;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.06);
+  }
+  button:active{ transform: translateY(2px); }
+
+  .btn-primary{
+    background: linear-gradient(135deg, var(--rose), var(--blush-deep));
+    color:white;
+    box-shadow: 0 10px 24px rgba(214,51,108,0.35);
+  }
+  .btn-primary:hover{ transform: translateY(-2px) scale(1.03); }
+
+  .btn-secondary{
+    background: white;
+    color: var(--rose);
+    border: 2px solid var(--blush);
+  }
+  .btn-secondary:hover{ background: #fff0f4; }
+
+  .btn-whatsapp{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    text-decoration:none;
+    background: linear-gradient(135deg, #25D366, #128C7E);
+    color:white;
+    box-shadow: 0 14px 30px rgba(37,211,102,0.45);
+    font-size: 1.25rem;
+    font-weight:700;
+    padding: 20px 40px;
+    border-radius: 999px;
+    animation: waPulse 1.8s ease-in-out infinite;
+  }
+  .btn-whatsapp:hover{
+    animation-play-state: paused;
+    transform: translateY(-3px) scale(1.06);
+  }
+  .btn-whatsapp .wa-icon{
+    font-size: 1.5rem;
+    animation: waWiggle 1.8s ease-in-out infinite;
+  }
+  @keyframes waPulse{
+    0%,100%{
+      transform: scale(1);
+      box-shadow: 0 14px 30px rgba(37,211,102,0.45), 0 0 0 0 rgba(37,211,102,0.5);
+    }
+    50%{
+      transform: scale(1.05);
+      box-shadow: 0 18px 36px rgba(37,211,102,0.5), 0 0 0 14px rgba(37,211,102,0);
+    }
+  }
+  @keyframes waWiggle{
+    0%,100%{ transform: rotate(0deg); }
+    20%{ transform: rotate(-14deg); }
+    40%{ transform: rotate(12deg); }
+    60%{ transform: rotate(-8deg); }
+    80%{ transform: rotate(6deg); }
+  }
+
+  @media (max-width:480px){
+    .btn-whatsapp{ font-size:1.05rem; padding:17px 26px; width:100%; }
+  }
+
+  /* ---------- Continue button with 10s loading ---------- */
+  .btn-loading{
+    position:relative;
+    overflow:hidden;
+    isolation:isolate;
+    min-width: 220px;
+    cursor:not-allowed;
+    opacity:0.9;
+  }
+  .btn-loading .btn-fill{
+    position:absolute;
+    inset:0;
+    left:0;
+    width:0%;
+    background: rgba(255,255,255,0.35);
+    z-index:0;
+    transition: width 10s linear;
+  }
+  .btn-loading .btn-label{
+    position:relative;
+    z-index:1;
+  }
+  .btn-loading.ready{
+    cursor:pointer;
+    opacity:1;
+    animation: continuePulse 1.8s ease-in-out infinite;
+  }
+  .btn-loading.ready .btn-fill{
+    background: rgba(255,255,255,0.15);
+  }
+  @keyframes continuePulse{
+    0%,100%{
+      transform: scale(1);
+      box-shadow: 0 10px 24px rgba(214,51,108,0.35), 0 0 0 0 rgba(214,51,108,0.45);
+    }
+    50%{
+      transform: scale(1.04);
+      box-shadow: 0 14px 30px rgba(214,51,108,0.4), 0 0 0 12px rgba(214,51,108,0);
+    }
+  }
+
+  /* No button dodge zone */
+  #proposalStage .choice-row{
+    position:relative;
+    min-height:160px;
+    align-items:flex-start;
+    padding-top:6px;
+  }
+  #yesBtn{
+    font-size:1.15rem;
+    padding: 18px 38px;
+    transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s ease, font-size 0.25s ease, padding 0.25s ease;
+  }
+  #noBtn{
+    position:relative;
+    transition: transform 0.18s ease, left 0.18s ease, top 0.18s ease;
+  }
+  .giggle{
+    position:absolute;
+    font-family:'Caveat', cursive;
+    font-size:1.1rem;
+    color:var(--rose);
+    white-space:nowrap;
+    pointer-events:none;
+    animation: popFade 1s ease forwards;
+  }
+  @keyframes popFade{
+    0%{ opacity:0; transform: translateY(6px) scale(0.8); }
+    20%{ opacity:1; transform: translateY(-4px) scale(1); }
+    100%{ opacity:0; transform: translateY(-18px) scale(1); }
+  }
+
+  /* screens */
+  .screen{ display:none; }
+  .screen.active{ display:block; animation: fadeSwap 0.5s ease; }
+  @keyframes fadeSwap{
+    from{ opacity:0; transform: translateX(14px); }
+    to{ opacity:1; transform: translateX(0); }
+  }
+
+  /* final screen */
+  #finalScreen h1{ font-size: 3rem; }
+  .big-heart{
+    font-size: 4.2rem;
+    display:inline-block;
+    margin-bottom: 6px;
+    filter: drop-shadow(0 8px 18px rgba(214,51,108,0.35));
+  }
+  .big-heart-emoji{
+    animation: heartShake 1.4s ease-in-out infinite;
+    display:inline-block;
+  }
+  .big-heart-img{
+    width: 130px;
+    height: 130px;
+    object-fit: contain;
+    animation: heartShake 1.4s ease-in-out infinite;
+  }
+  @keyframes heartShake{
+    0%,100%{ transform: rotate(0deg); }
+    15%{ transform: rotate(-8deg); }
+    30%{ transform: rotate(7deg); }
+    45%{ transform: rotate(-6deg); }
+    60%{ transform: rotate(5deg); }
+    75%{ transform: rotate(-3deg); }
+    90%{ transform: rotate(2deg); }
+  }
+  .final-note{
+    font-size:1rem;
+    color:#7a3c54;
+    max-width: 420px;
+    margin: 0 auto 10px;
+    line-height:1.5;
+  }
+
+  /* confetti */
+  .confetti-piece{
+    position:fixed;
+    top:-5%;
+    z-index:5;
+    pointer-events:none;
+    border-radius:2px;
+    animation: confettiFall linear forwards;
+  }
+  @keyframes confettiFall{
+    to{ transform: translateY(115vh) rotate(720deg); opacity:0.9; }
+  }
+
+  @media (max-width:480px){
+    .card{ padding: 34px 22px 30px; }
+    h1{ font-size:2.1rem; }
+    #finalScreen h1{ font-size:2.4rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+
+  /* ---------- Photo popup ---------- */
+  .photo-overlay{
+    position:fixed; inset:0;
+    background: rgba(90,20,42,0.45);
+    backdrop-filter: blur(6px);
+    display:flex; align-items:center; justify-content:center;
+    z-index:50;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+  }
+  .photo-overlay.show{
+    opacity:1;
+    pointer-events:auto;
+  }
+
+  .photo-frame{
+    background:#fff;
+    border-radius:18px;
+    padding: 18px 18px 22px;
+    width: 100%;
+    max-width: 360px;
+    text-align:center;
+    box-shadow: 0 30px 70px rgba(90,20,42,0.4);
+    position:relative;
+    transform: scale(0.3) rotate(-8deg);
+    opacity:0;
+  }
+  .photo-overlay.show .photo-frame{
+    animation: popIn 0.65s cubic-bezier(.17,1.4,.4,1) forwards;
+  }
+  @keyframes popIn{
+    0%{ transform: scale(0.3) rotate(-10deg); opacity:0; }
+    55%{ transform: scale(1.08) rotate(3deg); opacity:1; }
+    75%{ transform: scale(0.96) rotate(-2deg); }
+    100%{ transform: scale(1) rotate(-1.5deg); opacity:1; }
+  }
+
+  .photo-frame img{
+    width:100%;
+    display:block;
+    border-radius:10px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    background: linear-gradient(135deg, var(--blush) 0%, var(--lavender) 100%);
+  }
+
+  .photo-caption{
+    font-family:'Caveat', cursive;
+    font-size:1.4rem;
+    color:var(--rose);
+    font-weight:700;
+    margin: 14px 0 4px;
+  }
+
+  .photo-sub{
+    font-size:0.85rem;
+    color:#8a4a63;
+    margin: 0 0 14px;
+  }
+
+  .modal-close{
+    margin-top:2px;
+  }
+
+  /* popper emoji at corners of the frame */
+  .popper-emoji{
+    position:absolute;
+    font-size: 2rem;
+    opacity:0;
+  }
+  .popper-emoji.left{ left:-14px; bottom:-10px; transform-origin: bottom left; }
+  .popper-emoji.right{ right:-14px; bottom:-10px; transform-origin: bottom right; }
+  .photo-overlay.show .popper-emoji.left{
+    animation: popperKickLeft 0.6s ease 0.15s forwards;
+  }
+  .photo-overlay.show .popper-emoji.right{
+    animation: popperKickRight 0.6s ease 0.15s forwards;
+  }
+  @keyframes popperKickLeft{
+    0%{ opacity:0; transform: rotate(20deg) scale(0.5); }
+    50%{ opacity:1; transform: rotate(-18deg) scale(1.15); }
+    100%{ opacity:1; transform: rotate(-6deg) scale(1); }
+  }
+  @keyframes popperKickRight{
+    0%{ opacity:0; transform: scaleX(-1) rotate(20deg) scale(0.5); }
+    50%{ opacity:1; transform: scaleX(-1) rotate(-18deg) scale(1.15); }
+    100%{ opacity:1; transform: scaleX(-1) rotate(-6deg) scale(1); }
+  }
+
+  /* streamer bits shot from the poppers */
+  .streamer{
+    position:fixed;
+    width:6px; height:14px;
+    border-radius:2px;
+    z-index:49;
+    pointer-events:none;
+    animation: streamerFly ease-out forwards;
+  }
+  @keyframes streamerFly{
+    0%{ transform: translate(0,0) rotate(0deg); opacity:1; }
+    100%{ transform: translate(var(--sx), var(--sy)) rotate(var(--sr)); opacity:0; }
+  }
+  /* ---------- Funny top-edge sticker (screens 1-4) ---------- */
+  .top-sticker{
+    position:absolute;
+    top:-40px;
+    left:50%;
+    width:82px;
+    height:82px;
+    z-index:4;
+    opacity:0;
+    pointer-events:none;
+    transition: opacity 0.2s ease;
+  }
+  .top-sticker.show{
+    opacity:1;
+    animation: stickerPop 0.6s cubic-bezier(.34,1.56,.64,1);
+  }
+  .sticker-inner{
+    width:100%; height:100%;
+    border-radius:50%;
+    background:#fff;
+    border: 3px solid var(--gold);
+    box-shadow: 0 10px 22px rgba(90,30,58,0.28);
+    display:flex; align-items:center; justify-content:center;
+    font-size: 2.5rem;
+    overflow:hidden;
+    position:relative;
+    animation: stickerWiggle 3.2s ease-in-out infinite;
+  }
+  .sticker-inner img{
+    position:absolute; inset:0;
+    width:100%; height:100%; object-fit:cover;
+    display:none;
+  }
+  @keyframes stickerPop{
+    0%{ transform: translateX(-50%) scale(0.2) rotate(-35deg); opacity:0; }
+    55%{ transform: translateX(-50%) scale(1.2) rotate(10deg); opacity:1; }
+    100%{ transform: translateX(-50%) scale(1) rotate(-8deg); opacity:1; }
+  }
+  @keyframes stickerWiggle{
+    0%,100%{ transform: rotate(-6deg); }
+    50%{ transform: rotate(6deg); }
+  }
+
+  @media (max-width:480px){
+    .top-sticker{ width:64px; height:64px; top:-30px; }
+    .sticker-inner{ font-size:1.9rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hearts-bg" id="heartsBg"></div>
+
+<!-- Persistent decorative corner images — visible through the whole flow -->
+<!-- 👉 Drop files named corner-left.png and corner-right.png next to this HTML file to use your own images. -->
+<div class="corner-decor corner-bl">
+  <img src="corner-left.png" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+  <span class="corner-fallback" style="display:none;">🧸</span>
+</div>
+<div class="corner-decor corner-tr">
+  <img src="corner-right.png" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+  <span class="corner-fallback" style="display:none;">🎈</span>
+</div>
+
+<div class="stage">
+  <!-- Funny sticker that peeks over the top edge of the card during the 6 quiz questions -->
+  <div class="top-sticker" id="topSticker">
+    <div class="sticker-inner" id="stickerInner">
+      <!-- 👉 To use your own funny PNGs, drop files named sticker-1.png through sticker-6.png
+           next to this HTML file. If a file is missing, an emoji shows instead automatically. -->
+      <img id="stickerImg" src="" alt="" onerror="this.style.display='none';">
+      <span id="stickerEmoji"></span>
+    </div>
+  </div>
+
+  <div class="card theme-gate" id="cardEl">
+
+    <div class="progress hide-progress" id="progress">
+      <span class="dot" data-step="0"></span>
+      <span class="dot" data-step="1"></span>
+      <span class="dot" data-step="2"></span>
+      <span class="dot" data-step="3"></span>
+      <span class="dot" data-step="4"></span>
+      <span class="dot" data-step="5"></span>
+      <span class="dot" data-step="6"></span>
+    </div>
+
+    <!-- Password gate -->
+    <div class="screen active" data-screen="gate" id="gateScreen">
+      <div class="gate-lock">🔒</div>
+      <h1 class="splash-name" id="gateName"></h1>
+      <p class="subtext">This little surprise is just for you. Enter your loved one's birthday to unlock it 💌</p>
+      <div class="password-field">
+        <input type="text" inputmode="numeric" maxlength="6" id="passwordInput" placeholder="DDMMYY" autocomplete="off">
+        <p class="password-hint">Hint: DDMMYY</p>
+        <p class="password-error" id="passwordError">Not quite... try again 💭</p>
+      </div>
+      <div class="choices">
+        <button class="btn-primary" onclick="checkPassword()">Unlock 🔓</button>
+      </div>
+    </div>
+
+    <!-- Splash screen -->
+    <div class="screen" data-screen="splash" id="splashScreen">
+      <div class="splash-image-wrap">
+        <!-- 👉 Drop a file named splash-hero.png next to this HTML file to use your own image/photo. -->
+        <img class="splash-img" id="splashImg" src="splash-hero.png" alt="" onerror="this.style.display='none'; document.getElementById('splashEmoji').style.display='flex';">
+        <span class="splash-emoji" id="splashEmoji" style="display:none;">🧸💗</span>
+      </div>
+      <h1 class="splash-name" id="splashName"></h1>
+      <p class="subtext">someone's been waiting to ask you something...</p>
+      <div class="choices">
+        <button class="btn-primary" id="startBtn" onclick="startExperience()">Start 💫</button>
+        <button class="btn-primary btn-loading" id="continueBtn" disabled style="display:none;" onclick="handleContinueClick()">
+          <span class="btn-fill" id="continueFill"></span>
+          <span class="btn-label" id="continueLabel">Loading 10s...</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Screen 0 -->
+    <div class="screen" data-screen="0">
+      <p class="eyebrow">psst... come here for a sec</p>
+      <h1>I made you a tiny quiz.<br>No pressure. Okay, a little pressure.</h1>
+      <p class="subtext">6 questions. Should take about 30 seconds and one deep breath.</p>
+      <div class="choices">
+        <button class="btn-primary" onclick="goTo(1)">Okay, I'm intrigued 👀</button>
+      </div>
+    </div>
+
+    <!-- Screen 1 -->
+    <div class="screen" data-screen="1">
+      <p class="eyebrow">question 1 of 6</p>
+      <h1>Do you believe in second breakfasts?</h1>
+      <div class="choice-row">
+        <button class="btn-primary" onclick="selectAnswer('Second breakfasts?', 'Obviously 🥐', 2)">Obviously 🥐</button>
+        <button class="btn-secondary" onclick="selectAnswer('Second breakfasts?', 'Only on weekends', 2)">Only on weekends</button>
+      </div>
+    </div>
+
+    <!-- Screen 2 -->
+    <div class="screen" data-screen="2">
+      <p class="eyebrow">question 2 of 6</p>
+      <h1>Rate my jokes, honestly.</h1>
+      <div class="choice-row">
+        <button class="btn-primary" onclick="selectAnswer('My jokes?', 'Underrated genius 🌟', 3)">Underrated genius 🌟</button>
+        <button class="btn-secondary" onclick="selectAnswer('My jokes?', '...you\'re trying', 3)">...you're trying</button>
+      </div>
+    </div>
+
+    <!-- Screen 3 -->
+    <div class="screen" data-screen="3">
+      <p class="eyebrow">question 3 of 6</p>
+      <h1>Pick our movie-night snack.</h1>
+      <div class="choice-row">
+        <button class="btn-primary" onclick="selectAnswer('Movie-night snack?', 'Popcorn 🍿', 4)">Popcorn 🍿</button>
+        <button class="btn-secondary" onclick="selectAnswer('Movie-night snack?', 'Fries, obviously 🍟', 4)">Fries, obviously 🍟</button>
+      </div>
+    </div>
+
+    <!-- Screen 4 -->
+    <div class="screen" data-screen="4">
+      <p class="eyebrow">question 4 of 6</p>
+      <h1>Cuddles on the couch or a spontaneous road trip?</h1>
+      <div class="choice-row">
+        <button class="btn-primary" onclick="selectAnswer('Cuddles or road trip?', 'Cuddles, always 🤗', 5)">Cuddles, always 🤗</button>
+        <button class="btn-secondary" onclick="selectAnswer('Cuddles or road trip?', 'Road trip! 🚗', 5)">Road trip! 🚗</button>
+      </div>
+    </div>
+
+    <!-- Screen 5 -->
+    <div class="screen" data-screen="5">
+      <p class="eyebrow">question 5 of 6</p>
+      <h1>Pick our dream vacation spot.</h1>
+      <div class="choice-row">
+        <button class="btn-primary" onclick="selectAnswer('Dream vacation?', 'Beach sunsets 🏖️', 6)">Beach sunsets 🏖️</button>
+        <button class="btn-secondary" onclick="selectAnswer('Dream vacation?', 'Mountain cabin ⛰️', 6)">Mountain cabin ⛰️</button>
+      </div>
+    </div>
+
+    <!-- Screen 6: The Proposal -->
+    <div class="screen" data-screen="6" id="proposalStage">
+      <p class="eyebrow">last one, promise</p>
+      <h1>You passed the quiz with flying colors.<br>So here's the real question —</h1>
+      <p class="subtext" id="mainQ" style="font-size:1.1rem; color:var(--plum); font-weight:600;">Will you be my girlfriend? 🥺💗</p>
+      <div class="choice-row">
+        <button class="btn-primary" id="yesBtn" onclick="sayYes()">Yes 💗</button>
+        <button class="btn-secondary" id="noBtn" onmouseover="dodge()" onclick="dodge()" ontouchstart="dodge(event)">No</button>
+      </div>
+    </div>
+
+    <!-- Final screen -->
+    <div class="screen" data-screen="final" id="finalScreen">
+      <div class="big-heart">
+        <!-- 👉 Drop a file named final-heart.png next to this HTML file to use your own image. Falls back to an emoji if it's missing. -->
+        <img class="big-heart-img" id="finalHeartImg" src="final-heart.png" alt="Heart" onerror="this.style.display='none'; document.getElementById('finalHeartEmoji').style.display='inline-block';">
+        <span class="big-heart-emoji" id="finalHeartEmoji" style="display:none;">💖</span>
+      </div>
+      <h1>She said yes!</h1>
+      <p class="final-note">Best decision of your life, no notes. I'll go tell everyone now. Get ready for way too many good morning texts.</p>
+      <div class="choices">
+        <a class="btn-primary btn-whatsapp" id="whatsappBtn" href="#" target="_blank" rel="noopener"><span class="wa-icon">💬</span> Send my answers on WhatsApp</a>
+        <button class="btn-secondary" id="muteBtn" onclick="toggleMusic()">🔊 Mute music</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Photo popup, triggered right after she taps Yes -->
+<div class="photo-overlay" id="photoOverlay">
+  <div class="photo-frame">
+    <span class="popper-emoji left">🎉</span>
+    <span class="popper-emoji right">🎉</span>
+    <!-- 👉 Replace the src below with the path to your own photo, e.g. src="us.jpg" -->
+    <img id="thePhoto" src="data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23FFC1D3'/%3E%3Cstop offset='100%25' stop-color='%23C9BBFF'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='400' height='400' fill='url(%23g)'/%3E%3Ctext x='200' y='215' font-size='120' text-anchor='middle'%3E%F0%9F%92%91%3C/text%3E%3C/svg%3E" alt="Our photo">
+    <p class="photo-caption">Us, from now on 💕</p>
+    <p class="photo-sub">(swap this pic for your favorite one of you two)</p>
+    <button class="btn-primary modal-close" onclick="closePhoto()">Aww, close this 🥰</button>
+  </div>
+</div>
+
+<!-- Password gate music, plays while she's unlocking the surprise -->
+<!-- 👉 Drop a file named gate-music.mp3 next to this HTML file to use your own track. -->
+<audio id="gateMusic" src="gate-music.mp3" preload="auto" loop></audio>
+
+<!-- Splash screen music, plays while she's on the very first screen -->
+<!-- 👉 Drop a file named splash-music.mp3 next to this HTML file to use your own track. -->
+<audio id="splashMusic" src="splash-music.mp3" preload="auto"></audio>
+
+<!-- Question section music, plays through the 4 quiz questions -->
+<!-- 👉 Drop a file named question-music.mp3 next to this HTML file to use your own track. -->
+<audio id="questionMusic" src="question-music.mp3" preload="auto" loop></audio>
+
+<!-- Celebration music, plays right when she says Yes -->
+<!-- 👉 Drop a file named celebration-music.mp3 next to this HTML file to use your own track. -->
+<audio id="popupMusic" src="celebration-music.mp3" preload="auto" loop></audio>
+
+<script>
+  // ---------- Gate music: starts on page load ----------
+  const gateMusic = document.getElementById('gateMusic');
+  let gateMusicStarted = false;
+
+  function startGateMusic(){
+    if(gateMusicStarted) return;
+    gateMusic.volume = 0.6;
+    gateMusic.play().then(() => {
+      gateMusicStarted = true;
+    }).catch(() => {
+      // autoplay blocked by the browser until the person interacts with the page —
+      // the fallback listeners below will catch the first tap/click/keypress and retry.
+    });
+  }
+
+  // try right away on load
+  startGateMusic();
+
+  // fallback: start on the very first interaction anywhere on the page if it hasn't started yet
+  ['click', 'touchstart', 'keydown'].forEach(evt => {
+    document.addEventListener(evt, function onFirstInteract(){
+      if(!gateMusicStarted) startGateMusic();
+    }, { once: false });
+  });
+
+  // ---------- Splash music: starts when she taps "Start" ----------
+  const splashMusic = document.getElementById('splashMusic');
+  const questionMusic = document.getElementById('questionMusic');
+  const popupMusic = document.getElementById('popupMusic');
+
+  // ---------- Continue button: 10 second loading, then unlock ----------
+  const startBtn = document.getElementById('startBtn');
+  const continueBtn = document.getElementById('continueBtn');
+  const continueFill = document.getElementById('continueFill');
+  const continueLabel = document.getElementById('continueLabel');
+  const CONTINUE_WAIT = 10;
+  let continueSecondsLeft = CONTINUE_WAIT;
+  let continueReady = false;
+
+  function startExperience(){
+    // swap the Start button for the loading button
+    startBtn.style.display = 'none';
+    continueBtn.style.display = 'inline-flex';
+
+    // this click is a genuine user gesture, so audio is free to play
+    splashMusic.volume = 0.7;
+    splashMusic.play().catch(() => {
+      // fails silently if there's no splash-music.mp3 file present
+    });
+
+    startContinueCountdown();
+  }
+
+  function startContinueCountdown(){
+    // kick off the fill animation across the full 10s
+    requestAnimationFrame(() => {
+      continueFill.style.width = '100%';
+    });
+
+    const timer = setInterval(() => {
+      continueSecondsLeft -= 1;
+      if(continueSecondsLeft > 0){
+        continueLabel.textContent = `Loading ${continueSecondsLeft}s...`;
+      } else {
+        clearInterval(timer);
+        continueReady = true;
+        continueBtn.disabled = false;
+        continueBtn.classList.add('ready');
+        continueLabel.textContent = 'Continue 💫';
+      }
+    }, 1000);
+  }
+
+  function handleContinueClick(){
+    if(!continueReady) return;
+
+    // stop splash music, start the question-section music
+    splashMusic.pause();
+    questionMusic.currentTime = 0;
+    questionMusic.volume = 0.7;
+    questionMusic.play().catch(() => {
+      // click is a real user gesture, so this should succeed; fails silently if not
+    });
+
+    goTo(0);
+  }
+
+  // ---------- Splash name animation ----------
+  function animateSplashName(name, elId = 'splashName'){
+    const el = document.getElementById(elId);
+    el.innerHTML = '';
+    const fullText = `Hi ${name}`;
+    [...fullText].forEach((ch, i) => {
+      const span = document.createElement('span');
+      span.className = 'letter' + (ch === ' ' ? ' space' : '');
+      span.textContent = ch === ' ' ? '\u00A0' : ch;
+      span.style.animationDelay = (i * 0.06) + 's';
+      el.appendChild(span);
+    });
+  }
+  animateSplashName('Vithya', 'gateName');
+  animateSplashName('Vithya', 'splashName');
+
+  // ---------- Password gate ----------
+  const CORRECT_PASSWORD = '301097';
+  const passwordInput = document.getElementById('passwordInput');
+  const passwordError = document.getElementById('passwordError');
+
+  function checkPassword(){
+    const value = passwordInput.value.trim();
+    if(value === CORRECT_PASSWORD){
+      gateMusic.pause();
+      goTo('splash');
+    } else {
+      passwordError.classList.add('show');
+      passwordInput.classList.remove('input-shake');
+      void passwordInput.offsetWidth; // restart shake animation
+      passwordInput.classList.add('input-shake');
+      passwordInput.value = '';
+      passwordInput.focus();
+    }
+  }
+
+  passwordInput.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') checkPassword();
+  });
+
+
+  // ---------- Ambient hearts ----------
+  const heartsBg = document.getElementById('heartsBg');
+  const symbols = ['💗','💕','💓','✨','💖'];
+  function spawnHeart(){
+    const el = document.createElement('div');
+    el.className = 'heart-drift';
+    el.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    const startX = Math.random()*100;
+    const drift = (Math.random()*80 - 40) + 'px';
+    const duration = 9 + Math.random()*8;
+    const size = 16 + Math.random()*18;
+    el.style.left = startX + 'vw';
+    el.style.fontSize = size + 'px';
+    el.style.setProperty('--drift', drift);
+    el.style.animationDuration = duration + 's';
+    heartsBg.appendChild(el);
+    setTimeout(()=> el.remove(), duration*1000 + 500);
+  }
+  setInterval(spawnHeart, 650);
+  for(let i=0;i<8;i++) setTimeout(spawnHeart, i*300);
+
+  // ---------- Navigation ----------
+  const screens = document.querySelectorAll('.screen');
+  const dots = document.querySelectorAll('.dot');
+  let currentStep = 0;
+
+  const cardEl = document.querySelector('.card');
+  const themeClasses = ['theme-0','theme-1','theme-2','theme-3','theme-4','theme-5','theme-6','theme-final','theme-splash','theme-gate'];
+
+  function updateCardTheme(step){
+    cardEl.classList.remove(...themeClasses);
+    cardEl.classList.add(`theme-${step}`);
+  }
+
+  function goTo(step){
+    screens.forEach(s => s.classList.remove('active'));
+    const target = document.querySelector(`.screen[data-screen="${step}"]`);
+    target.classList.add('active');
+    currentStep = step;
+    dots.forEach(d => {
+      const s = parseInt(d.dataset.step);
+      d.classList.toggle('active', s === step);
+      d.classList.toggle('done', s < step);
+    });
+    document.getElementById('progress').classList.toggle('hide-progress', step === 'splash' || step === 'gate');
+    updateSticker(step);
+    updateCardTheme(step);
+  }
+
+  // ---------- Funny top sticker (screens 1-6 only) ----------
+  const topSticker = document.getElementById('topSticker');
+  const stickerImg = document.getElementById('stickerImg');
+  const stickerEmoji = document.getElementById('stickerEmoji');
+  const stickerMap = {
+    1: { emoji: '🥐', file: 'sticker-1.png' }, // second breakfast
+    2: { emoji: '🤡', file: 'sticker-2.png' }, // rate my jokes
+    3: { emoji: '🍿', file: 'sticker-3.png' }, // movie snack
+    4: { emoji: '🤗', file: 'sticker-4.png' }, // cuddles or road trip
+    5: { emoji: '🗺️', file: 'sticker-5.png' }, // dream vacation
+    6: { emoji: '😏', file: 'sticker-6.png' }  // the big question
+  };
+
+  function updateSticker(step){
+    const data = stickerMap[step];
+    if(!data){
+      topSticker.classList.remove('show');
+      return;
+    }
+    // reset pop animation so it replays for each new question
+    topSticker.classList.remove('show');
+    stickerEmoji.textContent = data.emoji;
+    stickerEmoji.style.display = 'flex';
+    stickerImg.style.display = 'none';
+    stickerImg.onload = () => {
+      stickerImg.style.display = 'block';
+      stickerEmoji.style.display = 'none';
+    };
+    stickerImg.onerror = () => {
+      stickerImg.style.display = 'none';
+      stickerEmoji.style.display = 'flex';
+    };
+    stickerImg.src = data.file;
+    void topSticker.offsetWidth; // force reflow to restart animation
+    topSticker.classList.add('show');
+  }
+
+  // ---------- Dodging No button ----------
+  const noBtn = document.getElementById('noBtn');
+  const yesBtn = document.getElementById('yesBtn');
+  const proposalStage = document.getElementById('proposalStage');
+  const giggleLines = ["nope!", "try again 😅", "not today", "catch me first", "nice try", "so close!"];
+  let yesScale = 1;
+
+  function dodge(e){
+    if(e) e.preventDefault();
+    const rowRect = proposalStage.querySelector('.choice-row').getBoundingClientRect();
+    const btnRect = noBtn.getBoundingClientRect();
+    const maxX = Math.max(rowRect.width - btnRect.width - 10, 40);
+    const maxY = Math.max(160 - btnRect.height - 10, 40);
+    const newX = Math.random()*maxX;
+    const newY = Math.random()*maxY;
+    noBtn.style.position = 'absolute';
+    noBtn.style.left = newX + 'px';
+    noBtn.style.top = newY + 'px';
+
+    // little giggle text
+    const g = document.createElement('span');
+    g.className = 'giggle';
+    g.textContent = giggleLines[Math.floor(Math.random()*giggleLines.length)];
+    g.style.left = newX + 'px';
+    g.style.top = (newY - 22) + 'px';
+    proposalStage.querySelector('.choice-row').appendChild(g);
+    setTimeout(()=> g.remove(), 1000);
+
+    // yes button grows a little each time
+    yesScale = Math.min(yesScale + 0.08, 1.6);
+    yesBtn.style.transform = `scale(${yesScale})`;
+  }
+
+  // ---------- Answer tracking ----------
+  const answers = [];
+  const whatsappNumber = '919090909090';
+  const whatsappBtn = document.getElementById('whatsappBtn');
+
+  function selectAnswer(question, answerText, nextStep){
+    answers.push({ question, answerText });
+    goTo(nextStep);
+  }
+
+  function buildWhatsAppLink(){
+    let lines = ["Here's how I answered 💌", ""];
+    answers.forEach(a => {
+      lines.push(`${a.question} ${a.answerText}`);
+    });
+    lines.push("");
+    lines.push("And the big question... Will you be my girlfriend? -> Yes 💗");
+    const message = lines.join('\n');
+    whatsappBtn.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+  }
+
+  // ---------- Yes! ----------
+  function sayYes(){
+    answers.push({ question: 'Will you be my girlfriend?', answerText: 'Yes 💗' });
+    buildWhatsAppLink();
+    goTo('final');
+    burstConfetti();
+
+    questionMusic.pause();
+    popupMusic.currentTime = 0;
+    popupMusic.volume = 0.8;
+    popupMusic.play().catch(() => {
+      // autoplay was blocked — the person already interacted with the page by clicking Yes,
+      // so this almost always succeeds; fails silently if not.
+    });
+
+    setTimeout(showPhoto, 900);
+  }
+
+  function toggleMusic(){
+    const muteBtn = document.getElementById('muteBtn');
+    if(popupMusic.paused){
+      popupMusic.play().catch(() => {});
+      muteBtn.textContent = '🔊 Mute music';
+    } else {
+      popupMusic.pause();
+      muteBtn.textContent = '🔇 Play music';
+    }
+  }
+
+  // ---------- Photo popup ----------
+  const photoOverlay = document.getElementById('photoOverlay');
+
+  function showPhoto(){
+    photoOverlay.classList.add('show');
+    shootStreamers();
+  }
+
+  function closePhoto(){
+    photoOverlay.classList.remove('show');
+  }
+
+  photoOverlay.addEventListener('click', (e) => {
+    if(e.target === photoOverlay) closePhoto();
+  });
+
+  function shootStreamers(){
+    const colors = ['#D6336C','#FF8FAB','#FFD166','#C9BBFF','#8dd0a3','#7fc7e6'];
+    const frameRect = () => photoOverlay.querySelector('.photo-frame').getBoundingClientRect();
+    const rect = frameRect();
+    const origins = [
+      { x: rect.left, y: rect.bottom }, // left popper
+      { x: rect.right, y: rect.bottom } // right popper
+    ];
+    origins.forEach((origin, idx) => {
+      const dirSign = idx === 0 ? 1 : -1; // left popper sprays rightward-ish, right sprays leftward-ish
+      for(let i=0; i<26; i++){
+        setTimeout(() => {
+          const s = document.createElement('div');
+          s.className = 'streamer';
+          const angle = (dirSign * (20 + Math.random()*70)) * (Math.PI/180); // upward cone
+          const dist = 90 + Math.random()*160;
+          const sx = Math.cos(angle) * dist * dirSign;
+          const sy = -Math.abs(Math.sin(angle) * dist) - Math.random()*40;
+          s.style.left = origin.x + 'px';
+          s.style.top = origin.y + 'px';
+          s.style.background = colors[Math.floor(Math.random()*colors.length)];
+          s.style.setProperty('--sx', sx + 'px');
+          s.style.setProperty('--sy', sy + 'px');
+          s.style.setProperty('--sr', (Math.random()*540 - 270) + 'deg');
+          s.style.animationDuration = (0.9 + Math.random()*0.7) + 's';
+          document.body.appendChild(s);
+          setTimeout(() => s.remove(), 1800);
+        }, i*12);
+      }
+    });
+  }
+
+  function burstConfetti(){
+    const colors = ['#D6336C','#FF8FAB','#FFD166','#C9BBFF','#FFF7F1'];
+    for(let i=0;i<90;i++){
+      setTimeout(()=>{
+        const p = document.createElement('div');
+        p.className = 'confetti-piece';
+        const size = 6 + Math.random()*8;
+        p.style.width = size + 'px';
+        p.style.height = (size*0.4 + 4) + 'px';
+        p.style.left = Math.random()*100 + 'vw';
+        p.style.background = colors[Math.floor(Math.random()*colors.length)];
+        p.style.animationDuration = (2.5 + Math.random()*2) + 's';
+        p.style.transform = `rotate(${Math.random()*360}deg)`;
+        document.body.appendChild(p);
+        setTimeout(()=> p.remove(), 5000);
+      }, i*18);
+    }
+  }
+
+  // ---------- Register service worker (makes this installable as an app) ----------
+  if('serviceWorker' in navigator){
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('service-worker.js').catch(() => {
+        // fails silently if served from file:// or without a proper host
+      });
+    });
+  }
+</script>
+
+</body>
+</html>
